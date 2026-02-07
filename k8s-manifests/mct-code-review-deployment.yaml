@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mct-code-review
+  namespace: inthewild
+  labels:
+    app: mct-code-review
+    tier: backend
+    module: mct
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mct-code-review
+  template:
+    metadata:
+      labels:
+        app: mct-code-review
+        tier: backend
+        module: mct
+    spec:
+      containers:
+      - name: mct-code-review
+        image: ghcr.io/midnghtsapphire/mct-code-review:latest
+        ports:
+        - containerPort: 3015
+          name: http
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3015"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: mct-secrets
+              key: database-url
+        - name: OPENROUTER_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: mct-secrets
+              key: openrouter-api-key
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3015
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3015
+          initialDelaySeconds: 10
+          periodSeconds: 5
+---

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mct-data-management
+  namespace: inthewild
+  labels:
+    app: mct-data-management
+    tier: backend
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 3011
+    protocol: TCP
+    name: http
+  selector:
+    app: mct-data-management
+---

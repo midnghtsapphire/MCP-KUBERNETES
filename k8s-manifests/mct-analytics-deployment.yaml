@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mct-analytics
+  namespace: inthewild
+  labels:
+    app: mct-analytics
+    tier: backend
+    module: mct
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mct-analytics
+  template:
+    metadata:
+      labels:
+        app: mct-analytics
+        tier: backend
+        module: mct
+    spec:
+      containers:
+      - name: mct-analytics
+        image: ghcr.io/midnghtsapphire/mct-analytics:latest
+        ports:
+        - containerPort: 3018
+          name: http
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3018"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: mct-secrets
+              key: database-url
+        - name: OPENROUTER_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: mct-secrets
+              key: openrouter-api-key
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3018
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3018
+          initialDelaySeconds: 10
+          periodSeconds: 5
+---

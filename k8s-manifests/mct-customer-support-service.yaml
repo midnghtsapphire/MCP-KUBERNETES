@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mct-customer-support
+  namespace: inthewild
+  labels:
+    app: mct-customer-support
+    tier: backend
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 3021
+    protocol: TCP
+    name: http
+  selector:
+    app: mct-customer-support
+---

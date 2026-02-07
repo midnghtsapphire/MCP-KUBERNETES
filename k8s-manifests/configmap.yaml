@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: inthewild-config
+  namespace: inthewild
+data:
+  MCT_AUTH_URL: "http://mct-auth"
+  MCT_AFFILIATE_URL: "http://mct-affiliate"
+  MCT_PAYMENT_URL: "http://mct-payment"
+  MCT_SUBSCRIPTION_URL: "http://mct-subscription"
+  MCT_USER_DASHBOARD_URL: "http://mct-user-dashboard"
+  MCT_ADMIN_DASHBOARD_URL: "http://mct-admin-dashboard"
+  MCT_BRANDING_URL: "http://mct-branding"
+  MCT_AD_CAMPAIGN_URL: "http://mct-ad-campaign"
+  MCT_AI_CHAT_URL: "http://mct-ai-chat"
+  MCT_WEBSITE_GENERATOR_URL: "http://mct-website-generator"
+  MCT_DATA_MANAGEMENT_URL: "http://mct-data-management"
+  MCT_REPORTS_URL: "http://mct-reports"
+  MCT_KUBERNETES_URL: "http://mct-kubernetes"
+  MCT_SOFTWARE_DISCOVERY_URL: "http://mct-software-discovery"
+  MCT_CODE_REVIEW_URL: "http://mct-code-review"
+  MCT_SEO_ACCESSIBILITY_URL: "http://mct-seo-accessibility"
+  MCT_EMAIL_MARKETING_URL: "http://mct-email-marketing"
+  MCT_ANALYTICS_URL: "http://mct-analytics"
+  MCT_CONTENT_CALENDAR_URL: "http://mct-content-calendar"
+  MCT_AB_TESTING_URL: "http://mct-ab-testing"
+  MCT_CUSTOMER_SUPPORT_URL: "http://mct-customer-support"
+  MCT_LOCALIZATION_URL: "http://mct-localization"
+---

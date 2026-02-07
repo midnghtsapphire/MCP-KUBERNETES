@@ -1,0 +1,181 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mct-ingress
+  namespace: inthewild
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: "letsencrypt-prod"
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - inthewild.app
+    - "*.inthewild.app"
+    secretName: inthewild-tls
+  rules:
+  - host: inthewild.app
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: inthewild-frontend
+            port:
+              number: 80
+      - path: /api/mct/auth
+        pathType: Prefix
+        backend:
+          service:
+            name: mct-auth
+            port:
+              number: 80
+      - path: /api/mct/affiliate
+        pathType: Prefix
+        backend:
+          service:
+            name: mct-affiliate
+            port:
+              number: 80
+      - path: /api/mct/payment
+        pathType: Prefix
+        backend:
+          service:
+            name: mct-payment
+            port:
+              number: 80
+      - path: /api/mct/subscription
+        pathType: Prefix
+        backend:
+          service:
+            name: mct-subscription
+            port:
+              number: 80
+      - path: /api/mct/user-dashboard
+        pathType: Prefix
+        backend:
+          service:
+            name: mct-user-dashboard
+            port:
+              number: 80
+      - path: /api/mct/admin-dashboard
+        pathType: Prefix
+        backend:
+          service:
+            name: mct-admin-dashboard
+            port:
+              number: 80
+      - path: /api/mct/branding
+        pathType: Prefix
+        backend:
+          service:
+            name: mct-branding
+            port:
+              number: 80
+      - path: /api/mct/ad-campaign
+        pathType: Prefix
+        backend:
+          service:
+            name: mct-ad-campaign
+            port:
+              number: 80
+      - path: /api/mct/ai-chat
+        pathType: Prefix
+        backend:
+          service:
+            name: mct-ai-chat
+            port:
+              number: 80
+      - path: /api/mct/website-generator
+        pathType: Prefix
+        backend:
+          service:
+            name: mct-website-generator
+            port:
+              number: 80
+      - path: /api/mct/data-management
+        pathType: Prefix
+        backend:
+          service:
+            name: mct-data-management
+            port:
+              number: 80
+      - path: /api/mct/reports
+        pathType: Prefix
+        backend:
+          service:
+            name: mct-reports
+            port:
+              number: 80
+      - path: /api/mct/kubernetes
+        pathType: Prefix
+        backend:
+          service:
+            name: mct-kubernetes
+            port:
+              number: 80
+      - path: /api/mct/software-discovery
+        pathType: Prefix
+        backend:
+          service:
+            name: mct-software-discovery
+            port:
+              number: 80
+      - path: /api/mct/code-review
+        pathType: Prefix
+        backend:
+          service:
+            name: mct-code-review
+            port:
+              number: 80
+      - path: /api/mct/seo-accessibility
+        pathType: Prefix
+        backend:
+          service:
+            name: mct-seo-accessibility
+            port:
+              number: 80
+      - path: /api/mct/email-marketing
+        pathType: Prefix
+        backend:
+          service:
+            name: mct-email-marketing
+            port:
+              number: 80
+      - path: /api/mct/analytics
+        pathType: Prefix
+        backend:
+          service:
+            name: mct-analytics
+            port:
+              number: 80
+      - path: /api/mct/content-calendar
+        pathType: Prefix
+        backend:
+          service:
+            name: mct-content-calendar
+            port:
+              number: 80
+      - path: /api/mct/ab-testing
+        pathType: Prefix
+        backend:
+          service:
+            name: mct-ab-testing
+            port:
+              number: 80
+      - path: /api/mct/customer-support
+        pathType: Prefix
+        backend:
+          service:
+            name: mct-customer-support
+            port:
+              number: 80
+      - path: /api/mct/localization
+        pathType: Prefix
+        backend:
+          service:
+            name: mct-localization
+            port:
+              number: 80
+---

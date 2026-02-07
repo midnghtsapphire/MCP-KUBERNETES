@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mct-ad-campaign
+  namespace: inthewild
+  labels:
+    app: mct-ad-campaign
+    tier: backend
+    module: mct
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mct-ad-campaign
+  template:
+    metadata:
+      labels:
+        app: mct-ad-campaign
+        tier: backend
+        module: mct
+    spec:
+      containers:
+      - name: mct-ad-campaign
+        image: ghcr.io/midnghtsapphire/mct-ad-campaign:latest
+        ports:
+        - containerPort: 3008
+          name: http
+        env:
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3008"
+        - name: DATABASE_URL
+          valueFrom:
+            secretKeyRef:
+              name: mct-secrets
+              key: database-url
+        - name: OPENROUTER_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: mct-secrets
+              key: openrouter-api-key
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 3008
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 3008
+          initialDelaySeconds: 10
+          periodSeconds: 5
+---

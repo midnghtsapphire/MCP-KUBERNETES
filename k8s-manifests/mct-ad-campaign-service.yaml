@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mct-ad-campaign
+  namespace: inthewild
+  labels:
+    app: mct-ad-campaign
+    tier: backend
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    targetPort: 3008
+    protocol: TCP
+    name: http
+  selector:
+    app: mct-ad-campaign
+---
