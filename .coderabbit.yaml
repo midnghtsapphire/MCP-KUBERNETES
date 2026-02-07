@@ -1,0 +1,103 @@
+# Coderabbit Configuration for MCT Modules
+# Automated code review settings for dev/test/live workflow
+
+# Language settings
+language: en-US
+
+# Review settings
+reviews:
+  # Enable automatic reviews on pull requests
+  auto_review: true
+  
+  # Review depth
+  review_depth: comprehensive
+  
+  # Enable line-by-line suggestions
+  line_suggestions: true
+  
+  # Enable security scanning
+  security_scan: true
+  
+  # Enable performance analysis
+  performance_analysis: true
+  
+  # Enable code quality checks
+  quality_checks: true
+
+# Branch protection settings
+branches:
+  # Development branch - less strict
+  dev:
+    require_review: false
+    auto_merge: false
+    
+  # Test branch - moderate strictness
+  test:
+    require_review: true
+    require_passing_checks: true
+    auto_merge: false
+    
+  # Live/Production branch - strict
+  live:
+    require_review: true
+    require_passing_checks: true
+    require_approval_count: 1
+    auto_merge: false
+    block_force_push: true
+  
+  main:
+    require_review: true
+    require_passing_checks: true
+    require_approval_count: 1
+    auto_merge: false
+    block_force_push: true
+
+# Code standards
+standards:
+  # TypeScript/JavaScript standards
+  typescript:
+    strict_mode: true
+    no_any: warn
+    prefer_const: true
+    
+  # Code style
+  style:
+    max_line_length: 120
+    indent_size: 2
+    
+  # Documentation
+  documentation:
+    require_function_docs: true
+    require_class_docs: true
+
+# Issue detection
+issues:
+  # Security issues
+  security:
+    sql_injection: error
+    xss: error
+    csrf: error
+    
+  # Code quality
+  quality:
+    code_duplication: warn
+    complexity: warn
+    unused_code: warn
+    
+  # Performance
+  performance:
+    n_plus_one: warn
+    memory_leaks: error
+
+# Notifications
+notifications:
+  # Comment on PR with review summary
+  pr_comments: true
+  
+  # Inline code suggestions
+  inline_suggestions: true
+
+# Attribution footer for integrated components
+footer:
+  enabled: true
+  text: "Code review provided by Coderabbit - Free automated AI code review"
