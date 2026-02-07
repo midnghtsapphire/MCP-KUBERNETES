@@ -1,0 +1,14 @@
+{
+  "name": "mct-kubernetes",
+  "version": "1.0.0",
+  "description": "MCT module for KUBERNETES",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/index.ts",
+    "test": "jest",
+    "setup": "npm install && npx drizzle-kit push:pg"
+  },
+  "keywords": ["mct", "api", "microservice"],
+  "license": "MIT"
+}
