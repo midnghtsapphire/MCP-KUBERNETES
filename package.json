@@ -1,14 +1,81 @@
 {
   "name": "mct-kubernetes",
   "version": "1.0.0",
-  "description": "MCT module for KUBERNETES",
-  "main": "dist/index.js",
+  "description": "MCT Kubernetes integration module for managing Kubernetes clusters.",
+  "main": "src/index.ts",
   "scripts": {
+    "start": "ts-node src/index.ts",
     "build": "tsc",
-    "dev": "tsx watch src/index.ts",
-    "test": "jest",
-    "setup": "npm install && npx drizzle-kit push:pg"
+    "docker:build": "docker build -t mct-kubernetes .",
+    "docker:run": "docker run -p 3000:3000 mct-kubernetes"
   },
-  "keywords": ["mct", "api", "microservice"],
-  "license": "MIT"
+  "dependencies": {
+    "@types/node": "^16.0.0",
+    "express": "^4.17.1",
+    "mongoose": "^6.0.12",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.5"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "tsc": "^2.0.3"
+  }
 }
+### 2. src/index.ts
+import express from 'express';
+import { router as apiRouter } from './api/routes';
+import { connectDatabase } from './db/schema';
+import { initializeMCT } from './mct/server';
+const app = express();
+const PORT = process.env.PORT || 3000;
+app.use(express.json());
+app.use('/api', apiRouter);
+app.listen(PORT, async () => {
+  console.log(`Server running on port ${PORT}`);
+  await connectDatabase();
+  initializeMCT();
+});
+### 3. src/api/routes.ts
+import { Router } from 'express';
+import { listPods, createDeployment } from '../services/kubernetes';
+export const router = Router();
+router.get('/pods', async (req, res) => {
+  const pods = await listPods();
+  res.json(pods);
+});
+router.post('/deployments', async (req, res) => {
+  const { name, image } = req.body;
+  const deployment = await createDeployment(name, image);
+  res.status(201).json(deployment);
+});
+### 4. src/db/schema.ts
+import mongoose from 'mongoose';
+export const connectDatabase = async () => {
+  await mongoose.connect('mongodb://localhost/mct-kubernetes');
+  console.log('Database connected');
+};
+const DeploymentSchema = new mongoose.Schema({
+  name: String,
+  image: String,
+  replicas: { type: Number, default: 1 }
+});
+export const Deployment = mongoose.model('Deployment', DeploymentSchema);
+### 5. src/mct/server.ts
+export const initializeMCT = () => {
+  console.log('MCT server initialized');
+};
+### 6. src/mct/tools.ts
+export const someMCTTool = () => {
+  console.log('MCT tool used');
+};
+### 7. src/services/kubernetes.ts
+import { Deployment } from '../db/schema';
+export const listPods = async () => {
+  // Placeholder for Kubernetes list pods API
+  return [{ name: 'pod1', status: 'Running' }];
+};
+export const createDeployment = async (name: string, image: string) => {
+  const deployment = new Deployment({ name, image });
+  await deployment.save();
+  return deployment;
+};
